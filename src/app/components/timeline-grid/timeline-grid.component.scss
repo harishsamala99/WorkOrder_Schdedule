@@ -1,0 +1,85 @@
+.timeline {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+
+  &__canvas {
+    position: relative;
+    min-height: 100%;
+  }
+
+  &__header {
+    display: flex;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--border);
+    background: var(--timeline-header);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  &__header-cell {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+    user-select: none;
+
+    &--weekend {
+      background: rgba(255, 255, 255, 0.015);
+      color: rgba(113, 113, 122, 0.6);
+    }
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__row {
+    display: flex;
+    position: relative;
+    height: var(--row-height);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.01);
+    }
+  }
+
+  &__cell {
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+
+    &--weekend {
+      background: rgba(255, 255, 255, 0.015);
+    }
+  }
+
+  &__today {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--today-line);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  &__today-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--today-line);
+    position: absolute;
+    top: -4px;
+    left: -3px;
+  }
+}
