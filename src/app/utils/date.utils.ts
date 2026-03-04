@@ -19,6 +19,10 @@ export function getVisibleRange(zoom: ZoomLevel): { start: Date; end: Date } {
   const end = new Date(today);
 
   switch (zoom) {
+    case 'hour':
+  start.setHours(start.getHours() - 12); // subtract 12 hours
+  end.setHours(end.getHours() + 12);     // add 12 hours
+  break;
     case 'day':
       start.setDate(start.getDate() - 14);
       end.setDate(end.getDate() + 14);
@@ -40,6 +44,7 @@ export function getVisibleRange(zoom: ZoomLevel): { start: Date; end: Date } {
  */
 export function getPixelsPerDay(zoom: ZoomLevel): number {
   switch (zoom) {
+    case 'hour': return 20;
     case 'day': return 60;
     case 'week': return 16;
     case 'month': return 4;
@@ -101,6 +106,14 @@ export function generateHeaderDates(
     const isWeekend = current.getDay() === 0 || current.getDay() === 6;
 
     switch (zoom) {
+      case 'hour':
+        dates.push({
+          date: new Date(current),
+          label: current.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }),
+          isWeekend,
+        });
+        current.setHours(current.getHours() + 1);
+        break;
       case 'day':
         dates.push({
           date: new Date(current),

@@ -104,6 +104,14 @@ import { addDays } from '../../utils/date.utils';
 
         <!-- Actions -->
         <div class="panel__actions">
+          <button
+            *ngIf="panel.mode === 'edit'"
+            type="button"
+            class="panel__btn panel__btn--delete"
+            (click)="onDelete()"
+          >
+            Delete
+          </button>
           <button type="button" class="panel__btn panel__btn--cancel" (click)="close()">
             Cancel
           </button>
@@ -175,6 +183,14 @@ export class WorkOrderPanelComponent implements OnChanges {
   onDateInput(field: 'startDate' | 'endDate', event: Event): void {
     const val = (event.target as HTMLInputElement).value;
     this.form.get(field)?.setValue(val);
+  }
+
+  onDelete(): void {
+    if (this.panel.mode !== 'edit' || !this.panel.workOrder) return;
+    if (confirm('Are you sure you want to delete this work order?')) {
+      this.service.deleteWorkOrder(this.panel.workOrder.docId);
+      this.service.closePanel();
+    }
   }
 
   onSubmit(): void {

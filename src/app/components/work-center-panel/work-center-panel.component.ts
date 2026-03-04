@@ -1,11 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { NgFor, NgClass, AsyncPipe } from '@angular/common';
 import { WorkCenterDocument } from '../../models/work-order.model';
+import { WorkOrderService } from '../../services/work-order.service';
 
 @Component({
   selector: 'app-work-center-panel',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgClass, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="wc-panel">
@@ -16,6 +17,9 @@ import { WorkCenterDocument } from '../../models/work-order.model';
         <div
           *ngFor="let wc of workCenters; trackBy: trackByDocId"
           class="wc-panel__row"
+          [class.wc-panel__row--hover]="(service.hoveredWorkCenterId$ | async) === wc.docId"
+          (mouseenter)="service.setHoveredWorkCenter(wc.docId)"
+          (mouseleave)="service.setHoveredWorkCenter(null)"
         >
           <div class="wc-panel__dot"></div>
           <span class="wc-panel__name">{{ wc.data.name }}</span>
@@ -23,10 +27,12 @@ import { WorkCenterDocument } from '../../models/work-order.model';
       </div>
     </div>
   `,
-  styleUrl: './work-center-panel.component.scss',
+  styleUrls: ['./work-center-panel.component.scss'],
 })
 export class WorkCenterPanelComponent {
   @Input() workCenters: WorkCenterDocument[] = [];
+
+  constructor(public service: WorkOrderService) {}
 
   trackByDocId(_: number, item: WorkCenterDocument): string {
     return item.docId;

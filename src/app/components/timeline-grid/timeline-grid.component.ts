@@ -1,28 +1,23 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ElementRef,
-  ViewChild,
-  AfterViewInit,
-  ChangeDetectionStrategy,
+import { 
+  Component, 
+  Input, 
+  OnChanges, 
+  SimpleChanges, 
+  ElementRef, 
+  ViewChild, 
+  AfterViewInit, 
+  ChangeDetectionStrategy, 
 } from '@angular/core';
-import { NgFor, NgIf, NgStyle } from '@angular/common';
-import {
-  WorkCenterDocument,
-  WorkOrderDocument,
-  ZoomLevel,
-} from '../../models/work-order.model';
-import {
-  getVisibleRange,
-  getPixelsPerDay,
-  dateToPixel,
-  dateRangeToWidth,
-  daysBetween,
-  generateHeaderDates,
-  pixelToDate,
-  todayStr,
+import { NgFor, NgIf, NgStyle, NgClass, AsyncPipe } from '@angular/common';
+import { WorkCenterDocument, WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
+import { 
+  getVisibleRange, 
+  getPixelsPerDay, 
+  dateToPixel, 
+  dateRangeToWidth, 
+  generateHeaderDates, 
+  pixelToDate, 
+  todayStr 
 } from '../../utils/date.utils';
 import { WorkOrderBarComponent } from '../work-order-bar/work-order-bar.component';
 import { WorkOrderService } from '../../services/work-order.service';
@@ -30,15 +25,15 @@ import { WorkOrderService } from '../../services/work-order.service';
 @Component({
   selector: 'app-timeline-grid',
   standalone: true,
-  imports: [NgFor, NgIf, NgStyle, WorkOrderBarComponent],
+  imports: [NgFor, NgIf, NgStyle, NgClass, AsyncPipe, WorkOrderBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="timeline" #scrollContainer (scroll)="onScroll()">
       <div class="timeline__canvas" [ngStyle]="{ width: totalWidth + 'px' }">
         <!-- Header -->
         <div class="timeline__header">
-          <div
-            *ngFor="let col of headerDates; trackBy: trackByLabel"
+          <div 
+            *ngFor="let col of headerDates; trackBy: trackByLabel" 
             class="timeline__header-cell"
             [class.timeline__header-cell--weekend]="col.isWeekend"
             [ngStyle]="{ width: columnWidth + 'px' }"
@@ -49,13 +44,16 @@ import { WorkOrderService } from '../../services/work-order.service';
 
         <!-- Rows -->
         <div class="timeline__body">
-          <div
+          <div 
             *ngFor="let wc of workCenters; trackBy: trackByDocId"
             class="timeline__row"
+            [class.timeline__row--hover]="(service.hoveredWorkCenterId$ | async) === wc.docId"
+            (mouseenter)="service.setHoveredWorkCenter(wc.docId)"
+            (mouseleave)="service.setHoveredWorkCenter(null)"
             (click)="onRowClick($event, wc.docId)"
           >
             <!-- Grid columns -->
-            <div
+            <div 
               *ngFor="let col of headerDates; trackBy: trackByLabel"
               class="timeline__cell"
               [class.timeline__cell--weekend]="col.isWeekend"
@@ -72,7 +70,7 @@ import { WorkOrderService } from '../../services/work-order.service';
           </div>
 
           <!-- Today indicator -->
-          <div
+          <div 
             *ngIf="todayPixel >= 0"
             class="timeline__today"
             [ngStyle]="{ left: todayPixel + 'px' }"
@@ -83,7 +81,7 @@ import { WorkOrderService } from '../../services/work-order.service';
       </div>
     </div>
   `,
-  styleUrl: './timeline-grid.component.scss',
+  styleUrls: ['./timeline-grid.component.scss'],
 })
 export class TimelineGridComponent implements OnChanges, AfterViewInit {
   @Input() workCenters: WorkCenterDocument[] = [];
@@ -97,14 +95,19 @@ export class TimelineGridComponent implements OnChanges, AfterViewInit {
   columnWidth = 0;
   todayPixel = 0;
 
+  private workOrdersByWc = new Map<string, WorkOrderDocument[]>();
   private visibleStart!: Date;
   private visibleEnd!: Date;
   private pixelsPerDay = 60;
   private needsCenter = true;
 
-  constructor(private service: WorkOrderService) {}
+  constructor(public service: WorkOrderService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['workOrders']) {
+      this.groupWorkOrders();
+    }
+
     if (changes['zoom'] || changes['workOrders'] || changes['workCenters']) {
       this.recalculate();
       this.needsCenter = true;
@@ -118,6 +121,16 @@ export class TimelineGridComponent implements OnChanges, AfterViewInit {
     }
   }
 
+  private groupWorkOrders(): void {
+    this.workOrdersByWc.clear();
+    for (const wc of this.workCenters) {
+      this.workOrdersByWc.set(wc.docId, []);
+    }
+    for (const wo of this.workOrders) {
+      this.workOrdersByWc.get(wo.data.workCenterId)?.push(wo);
+    }
+  }
+
   private recalculate(): void {
     const range = getVisibleRange(this.zoom);
     this.visibleStart = range.start;
@@ -128,13 +141,23 @@ export class TimelineGridComponent implements OnChanges, AfterViewInit {
 
     // Column width depends on zoom
     switch (this.zoom) {
-      case 'day':   this.columnWidth = this.pixelsPerDay; break;
-      case 'week':  this.columnWidth = this.pixelsPerDay * 7; break;
-      case 'month': this.columnWidth = this.pixelsPerDay * 30; break;
+      case 'hour':
+      case 'day':
+        this.columnWidth = this.pixelsPerDay;
+        break;
+      case 'week':
+        this.columnWidth = this.pixelsPerDay * 7;
+        break;
+      case 'month':
+        this.columnWidth = this.pixelsPerDay * 30;
+        break;
     }
 
     this.totalWidth = this.headerDates.length * this.columnWidth;
-    this.todayPixel = dateToPixel(todayStr(), this.visibleStart, this.pixelsPerDay);
+
+    // Today or current hour pixel
+    const now = new Date();
+    this.todayPixel = dateToPixel(now.toISOString(), this.visibleStart, this.pixelsPerDay);
 
     // Center after the view updates
     setTimeout(() => this.centerOnToday());
@@ -148,7 +171,7 @@ export class TimelineGridComponent implements OnChanges, AfterViewInit {
   }
 
   getOrdersForWC(wcId: string): WorkOrderDocument[] {
-    return this.workOrders.filter((wo) => wo.data.workCenterId === wcId);
+    return this.workOrdersByWc.get(wcId) || [];
   }
 
   getBarLeft(wo: WorkOrderDocument): number {

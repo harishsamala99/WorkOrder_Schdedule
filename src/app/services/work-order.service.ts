@@ -49,11 +49,13 @@ export class WorkOrderService {
   private workOrdersSubject = new BehaviorSubject<WorkOrderDocument[]>(this.loadOrders());
   private zoomSubject = new BehaviorSubject<ZoomLevel>('day');
   private panelSubject = new BehaviorSubject<PanelState>({ isOpen: false, mode: 'create' });
+  private hoveredWorkCenterIdSubject = new BehaviorSubject<string | null>(null);
 
   workCenters$ = this.workCentersSubject.asObservable();
   workOrders$ = this.workOrdersSubject.asObservable();
   zoom$ = this.zoomSubject.asObservable();
   panel$ = this.panelSubject.asObservable();
+  hoveredWorkCenterId$ = this.hoveredWorkCenterIdSubject.asObservable();
 
   get workCenters(): WorkCenterDocument[] {
     return this.workCentersSubject.value;
@@ -154,5 +156,11 @@ export class WorkOrderService {
 
   closePanel(): void {
     this.panelSubject.next({ isOpen: false, mode: 'create' });
+  }
+
+  // ── Hover ──
+
+  setHoveredWorkCenter(id: string | null): void {
+    this.hoveredWorkCenterIdSubject.next(id);
   }
 }

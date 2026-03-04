@@ -111,6 +111,19 @@
         cursor: not-allowed;
       }
     }
+
+    &--delete {
+      background: transparent;
+      color: var(--destructive);
+      border: 1px solid var(--destructive);
+      margin-right: auto;
+      flex-grow: 0;
+      padding: 10px 16px;
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.1);
+      }
+    }
   }
 }
 

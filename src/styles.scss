@@ -1,11 +1,11 @@
 // ── Global Variables ──
 :root {
-  --bg: #0f1117;
-  --bg-card: #161820;
-  --bg-muted: #1c1e28;
-  --border: #2a2d3a;
-  --text: #e4e4e7;
-  --text-muted: #71717a;
+  --bg: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-muted: #f3f4f6;
+  --border: #e5e7eb;
+  --text: #111827;
+  --text-muted: #6b7280;
   --primary: #6366f1;
   --primary-hover: #818cf8;
   --destructive: #ef4444;
@@ -17,8 +17,9 @@
   --status-complete: 142, 71%, 45%;
   --status-blocked: 32, 95%, 44%;
 
-  --timeline-header: #13141c;
+  --timeline-header: #f9fafb;
   --today-line: #ef4444;
+  --row-hover: #f3f4f6;
   --row-height: 64px;
   --header-height: 56px;
 }

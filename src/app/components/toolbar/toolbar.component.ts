@@ -16,7 +16,7 @@ import { NgFor } from '@angular/common';
 
       <div class="toolbar__right">
         <button class="toolbar__btn" (click)="todayClick.emit()">
-          📅 Today
+          📅 Timeline
         </button>
 
         <select
@@ -44,6 +44,7 @@ export class ToolbarComponent {
   @Output() resetData = new EventEmitter<void>();
 
   zoomOptions = [
+    { value: 'hour' as ZoomLevel, label: 'Hour' },
     { value: 'day' as ZoomLevel, label: 'Day' },
     { value: 'week' as ZoomLevel, label: 'Week' },
     { value: 'month' as ZoomLevel, label: 'Month' },

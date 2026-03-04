@@ -13,16 +13,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  overflow: hidden;
   transition: box-shadow 0.15s, transform 0.15s;
 
   &:hover {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transform: scaleY(1.01);
-
-    .bar__menu-btn {
-      opacity: 1;
-    }
   }
 
   &__content {
@@ -65,7 +60,7 @@
   }
 
   &__menu-btn {
-    opacity: 0;
+    opacity: 1;
     background: none;
     border: none;
     cursor: pointer;
@@ -74,6 +69,8 @@
     font-size: 14px;
     transition: opacity 0.15s;
     line-height: 1;
+    position: relative;
+    z-index: 10;
 
     &:hover {
       background: rgba(0, 0, 0, 0.1);
@@ -84,7 +81,7 @@
     position: absolute;
     right: 0;
     top: 100%;
-    z-index: 50;
+    z-index: 100;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 8px;

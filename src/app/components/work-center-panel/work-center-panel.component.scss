@@ -35,8 +35,8 @@
     border-bottom: 1px solid var(--border);
     transition: background 0.15s;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.02);
+    &--hover {
+      background: var(--row-hover);
 
       .wc-panel__dot {
         background: var(--primary);
