@@ -1,12 +1,11 @@
 import { 
   Component, 
   Input, 
-  HostListener, 
-  ElementRef, 
   ChangeDetectionStrategy, 
   ChangeDetectorRef 
 } from '@angular/core'; 
-import { NgIf, NgStyle } from '@angular/common'; 
+import { NgIf, NgStyle } from '@angular/common';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { WorkOrderDocument } from '../../models/work-order.model'; 
 import { getStatusStyle, getStatusDotColor } from '../../utils/status.utils'; 
 import { WorkOrderService } from '../../services/work-order.service'; 
@@ -14,7 +13,7 @@ import { WorkOrderService } from '../../services/work-order.service';
 @Component({ 
   selector: 'app-work-order-bar', 
   standalone: true, 
-  imports: [NgIf, NgStyle], 
+  imports: [NgIf, NgStyle, NgbDropdownModule], 
   changeDetection: ChangeDetectionStrategy.OnPush, 
   templateUrl: './work-order-bar.component.html', 
   styleUrls: ['./work-order-bar.component.scss'] 
@@ -24,11 +23,8 @@ export class WorkOrderBarComponent {
   @Input() left = 0; 
   @Input() width = 0; 
 
-  menuOpen = false; 
-
   constructor(
     private service: WorkOrderService,
-    private elRef: ElementRef,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -48,31 +44,12 @@ export class WorkOrderBarComponent {
     return Math.max(this.width, 40);
   }
 
-  @HostListener('document:mousedown', ['$event'])
-  onDocClick(event: MouseEvent): void {
-    // Close menu if clicked outside
-    if (this.menuOpen && !this.elRef.nativeElement.contains(event.target)) {
-      this.menuOpen = false;
-      this.cdr.detectChanges();
-    }
-  }
-
-  toggleMenu(event: MouseEvent): void {
-    event.stopPropagation();
-    this.menuOpen = !this.menuOpen;
-    this.cdr.detectChanges();
-  }
-
-  onEdit(event: MouseEvent): void {
-    event.stopPropagation();
-    this.menuOpen = false;
+  onEdit(): void {
     this.service.openEditPanel(this.order);
     this.cdr.detectChanges();
   }
 
-  onDelete(event: MouseEvent): void {
-    event.stopPropagation();
-    this.menuOpen = false;
+  onDelete(): void {
     this.service.deleteWorkOrder(this.order.docId);
     this.cdr.detectChanges();
   }

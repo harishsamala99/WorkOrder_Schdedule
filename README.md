@@ -4,6 +4,7 @@
 - Angular 17+ (standalone components)
 - TypeScript (strict mode)
 - SCSS
+- **Angular CDK (Drag & Drop)**: Used for the timeline drag-and-drop feature. It provides a robust and straightforward way to build interactive drag-and-drop functionality with minimal boilerplate.
 - Reactive Forms (FormGroup, FormControl, Validators)
 - ng-select (status dropdown)
 - @ng-bootstrap/ng-bootstrap (ngb-datepicker)
@@ -24,6 +25,7 @@ Open http://localhost:4200
 
 ## Features
 - Interactive Gantt-style timeline
+- **Drag & Drop**: Move work orders along the timeline to reschedule them. Work orders can also be moved between different work centers.
 - Day / Week / Month zoom levels
 - Click empty area → create work order
 - Three-dot menu on bars → Edit / Delete

@@ -6,8 +6,7 @@
     'background-color': style.background,
     'border-color': style.borderColor,
     'color': style.color
-  }" 
-  (click)="toggleMenu($event)"
+  }"
 >
   <div class="bar__content">
     <div class="bar__dot" [style.background-color]="dotColor"></div>
@@ -16,19 +15,21 @@
 
   <div class="bar__actions">
     <div class="bar__badge" [ngStyle]="{ 'background-color': style.color, 'color': '#fff' }">{{ statusLabel }}</div>
-    <button class="bar__menu-btn" (click)="toggleMenu($event)">
-      <i class="fas fa-ellipsis-v"></i>
-    </button>
-  </div>
-
-  <div class="bar__dropdown" *ngIf="menuOpen">
-    <button class="bar__dropdown-item" (click)="onEdit($event)">
-      <i class="fas fa-edit"></i>
-      <span>Edit</span>
-    </button>
-    <button class="bar__dropdown-item bar__dropdown-item--danger" (click)="onDelete($event)">
-      <i class="fas fa-trash-alt"></i>
-      <span>Delete</span>
-    </button>
+    <div ngbDropdown container="body" class="d-inline-block">
+      <button class="bar__menu-btn" ngbDropdownToggle>
+        <i class="fas fa-ellipsis-v"></i>
+      </button>
+      <div ngbDropdownMenu class="bar__dropdown-menu">
+        <button class="bar__dropdown-item" (click)="onEdit()">
+          <i class="fas fa-edit"></i>
+          <span>Edit</span>
+        </button>
+        <button class="bar__dropdown-item bar__dropdown-item--danger" (click)="onDelete()">
+          <i class="fas fa-trash-alt"></i>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
+
