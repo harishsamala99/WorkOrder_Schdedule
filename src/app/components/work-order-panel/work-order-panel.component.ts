@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -30,7 +31,7 @@ import { addDays } from '../../utils/date.utils';
     <div *ngIf="panel.isOpen" class="panel-backdrop" (click)="close()"></div>
 
     <!-- Slide-in Panel -->
-    <div class="panel" [class.panel--open]="panel.isOpen">
+    <div class="panel" [@slideInOut]="panel.isOpen ? 'open' : 'closed'">
       <div class="panel__header">
         <h2 class="panel__title">{{ panel.mode === 'edit' ? 'Edit Work Order' : 'Create Work Order' }}</h2>
         <button class="panel__close" (click)="close()">✕</button>
@@ -123,6 +124,13 @@ import { addDays } from '../../utils/date.utils';
     </div>
   `,
   styleUrl: './work-order-panel.component.scss',
+  animations: [
+    trigger('slideInOut', [
+      state('closed', style({ transform: 'translateX(100%)' })),
+      state('open', style({ transform: 'translateX(0)' })),
+      transition('closed <=> open', [animate('225ms cubic-bezier(0.4, 0, 0.2, 1)')]),
+    ]),
+  ],
 })
 export class WorkOrderPanelComponent implements OnChanges {
   @Input() panel: PanelState = { isOpen: false, mode: 'create' };

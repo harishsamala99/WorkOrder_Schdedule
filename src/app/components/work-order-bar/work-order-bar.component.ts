@@ -5,7 +5,7 @@ import {
   ChangeDetectorRef 
 } from '@angular/core'; 
 import { NgIf, NgStyle } from '@angular/common';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { WorkOrderDocument } from '../../models/work-order.model'; 
 import { getStatusStyle, getStatusDotColor } from '../../utils/status.utils'; 
 import { WorkOrderService } from '../../services/work-order.service'; 
@@ -13,7 +13,7 @@ import { WorkOrderService } from '../../services/work-order.service';
 @Component({ 
   selector: 'app-work-order-bar', 
   standalone: true, 
-  imports: [NgIf, NgStyle, NgbDropdownModule], 
+  imports: [NgIf, NgStyle, NgbDropdownModule, NgbTooltipModule], 
   changeDetection: ChangeDetectionStrategy.OnPush, 
   templateUrl: './work-order-bar.component.html', 
   styleUrls: ['./work-order-bar.component.scss'] 
@@ -42,6 +42,12 @@ export class WorkOrderBarComponent {
 
   get barWidth(): number {
     return Math.max(this.width, 40);
+  }
+
+  get tooltipText(): string {
+    return `${this.order.data.name}
+Status: ${this.statusLabel}
+${this.order.data.startDate} – ${this.order.data.endDate}`;
   }
 
   onEdit(): void {

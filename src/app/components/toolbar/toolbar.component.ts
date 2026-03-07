@@ -16,7 +16,7 @@ import { NgFor } from '@angular/common';
 
       <div class="toolbar__right">
         <button class="toolbar__btn" (click)="todayClick.emit()">
-          📅 Timeline
+          📅 Today
         </button>
 
         <select
