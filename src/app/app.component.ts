@@ -53,7 +53,7 @@ import { AsyncPipe } from '@angular/common';
     .main-content {
       display: flex;
       flex: 1;
-      overflow: hidden;
+      overflow: auto;
     }
   `],
 })

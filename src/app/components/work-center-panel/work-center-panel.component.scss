@@ -3,6 +3,8 @@
   width: 208px;
   border-right: 1px solid var(--border);
   background: var(--bg-card);
+  position: sticky;
+  left: 0;
   z-index: 10;
 
   &__header {

@@ -17,6 +17,21 @@ const WORK_CENTERS: WorkCenterDocument[] = [
   { docId: 'wc-3', docType: 'workCenter', data: { name: 'Assembly Station' } },
   { docId: 'wc-4', docType: 'workCenter', data: { name: 'Quality Control' } },
   { docId: 'wc-5', docType: 'workCenter', data: { name: 'Packaging Line' } },
+  { docId: 'wc-6', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-7', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-8', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-9', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-10', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-11', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-12', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-13', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-14', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-15', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-16', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-17', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-18', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-19', docType: 'workCenter', data: { name: '' } },
+  { docId: 'wc-20', docType: 'workCenter', data: { name: '' } },
 ];
 
 function todayStr(): string {
