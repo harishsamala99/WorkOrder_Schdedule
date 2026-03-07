@@ -1,43 +1,88 @@
 # Work Order Schedule Timeline — Angular 17+
 
+This project is an interactive Gantt-style timeline for scheduling work orders, built with Angular 17+. It allows users to manage a production schedule by dragging and dropping work orders, changing their status, and editing details in a slide-in panel. The timeline view supports day, week, and month zoom levels, and it automatically saves the data to `localStorage`.
+
 ## Tech Stack
-- Angular 17+ (standalone components)
-- TypeScript (strict mode)
-- SCSS
-- **Angular CDK (Drag & Drop)**: Used for the timeline drag-and-drop feature. It provides a robust and straightforward way to build interactive drag-and-drop functionality with minimal boilerplate.
-- Reactive Forms (FormGroup, FormControl, Validators)
-- ng-select (status dropdown)
-- @ng-bootstrap/ng-bootstrap (ngb-datepicker)
-- localStorage persistence
 
-## Setup
-
-```bash
-# 1. Copy this folder to your machine
-# 2. Install dependencies
-npm install
-
-# 3. Run
-ng serve
-```
-
-Open http://localhost:4200
+- **Angular 17+**: Core framework, utilizing standalone components for a modular architecture.
+- **TypeScript**: Strict mode is enabled for improved code quality and maintainability.
+- **SCSS**: Used for styling the application, with a component-based approach.
+- **Angular CDK (Drag & Drop)**: Provides the core functionality for moving work orders on the timeline.
+- **Reactive Forms**: Manages form state and validation for creating and editing work orders.
+- **ng-select**: A flexible and powerful dropdown component for selecting the work order status.
+- **@ng-bootstrap/ng-bootstrap**: Used for the date picker in the work order form.
+- **localStorage**: Provides simple persistence of work order data in the browser.
 
 ## Features
-- Interactive Gantt-style timeline
-- **Drag & Drop**: Move work orders along the timeline to reschedule them. Work orders can also be moved between different work centers.
-- Day / Week / Month zoom levels
-- Click empty area → create work order
-- Three-dot menu on bars → Edit / Delete
-- Overlap detection per work center
-- Slide-in panel with reactive form validation
-- Today indicator line
-- ESC to close panel
-- localStorage persistence
-- Reset sample data button
 
-## Architecture
-- **Models**: `src/app/models/work-order.model.ts` — document pattern types
-- **Service**: `src/app/services/work-order.service.ts` — state + CRUD + overlap logic
-- **Utils**: `src/app/utils/date.utils.ts` — date-to-pixel math
-- **Components**: All standalone, OnPush change detection, trackBy used
+- **Interactive Gantt-Style Timeline**: Visual representation of work orders over time.
+- **Drag & Drop**: Easily reschedule work orders by dragging them along the timeline or moving them between different work centers.
+- **Zoom Levels**: Switch between day, week, and month views to get a better overview of the schedule.
+- **Create Work Orders**: Click on an empty area of the timeline to open a panel and create a new work order.
+- **Edit & Delete**: A three-dot menu on each work order bar allows for quick editing or deletion.
+- **Overlap Detection**: The system prevents scheduling conflicts by detecting and highlighting overlapping work orders within the same work center.
+- **Slide-In Panel**: A modern, non-blocking UI for creating and editing work order details.
+- **Reactive Form Validation**: Ensures data integrity with real-time feedback on the input fields.
+- **"Today" Indicator**: A vertical line on the timeline marks the current date for easy reference.
+- **Keyboard Shortcuts**: Press `ESC` to quickly close the slide-in panel.
+- **Data Persistence**: The application state is automatically saved to `localStorage`, so your work is not lost on page refresh.
+- **Sample Data**: A "Reset" button is available to restore the initial sample data for demonstration purposes.
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (which includes npm) installed on your machine.
+
+### Setup
+
+1. **Clone the repository or copy the folder to your machine.**
+
+2. **Install the dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   ng serve
+   ```
+
+   The application will be available at `http://localhost:4200`.
+
+## Development
+
+### Running Tests
+
+To run the unit tests, use the following command:
+
+```bash
+ng test
+```
+
+### Building the Project
+
+To build the project for production, use the following command:
+
+```bash
+ng build
+```
+
+The build artifacts will be stored in the `dist/` directory.
+
+## Project Structure
+
+The project follows a standard Angular architecture with a few key areas:
+
+- **`src/app/models/work-order.model.ts`**: Contains the TypeScript interfaces for the data models, such as `WorkOrder`.
+- **`src/app/services/work-order.service.ts`**: The core service that manages the state of the work orders, including all CRUD (Create, Read, Update, Delete) operations and the overlap detection logic.
+- **`src/app/utils/date.utils.ts`**: A utility file with helper functions for date calculations and converting dates to pixel values for positioning on the timeline.
+- **`src/app/components`**: This directory contains all the standalone components, each with its own template, styles, and logic. The main components include:
+  - **`timeline-grid`**: The background grid of the timeline.
+  - **`work-order-bar`**: Represents a single work order on the timeline.
+  - **`work-order-panel`**: The slide-in panel for creating and editing work orders.
+  - **`toolbar`**: The top bar with zoom controls and the "Reset" button.
+- **`OnPush` Change Detection**: All components are configured with `OnPush` change detection to optimize performance.
+- **`trackBy`**: Used in `*ngFor` loops to improve rendering performance when the data changes.
