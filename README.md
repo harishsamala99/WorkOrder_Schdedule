@@ -15,6 +15,9 @@ This project is an interactive Gantt-style timeline for scheduling work orders, 
 
 ## Features
 
+- **Infinite Horizontal Scroll**: The timeline dynamically loads past and future dates as you scroll, allowing for seamless navigation across any time range without performance degradation.
+- **Smooth UI Animations**: The create/edit panel uses a smooth slide-in/out animation for a modern user experience.
+- **Hover Tooltips**: Hovering over any work order bar displays a tooltip with its full details, including name, status, and dates.
 - **Interactive Gantt-Style Timeline**: Visual representation of work orders over time.
 - **Drag & Drop**: Easily reschedule work orders by dragging them along the timeline or moving them between different work centers.
 - **Zoom Levels**: Switch between day, week, and month views to get a better overview of the schedule.
