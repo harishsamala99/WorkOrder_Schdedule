@@ -175,3 +175,49 @@ export function generateHeaderDates(
   }
   return dates;
 }
+
+/**
+ * Gets a new date range to load when scrolling.
+ * @param anchorDate The date from which to calculate the new range.
+ * @param direction Whether to load 'past' or 'future' dates.
+ * @param zoom The current zoom level.
+ * @returns A new { start, end } date range.
+ */
+export function getLoadMoreDateRange(
+  anchorDate: Date,
+  direction: 'past' | 'future',
+  zoom: ZoomLevel
+): { start: Date; end: Date } {
+  const loadIncrement = {
+    hour: { count: 1, unit: 'day' },
+    day: { count: 7, unit: 'day' },
+    week: { count: 1, unit: 'month' },
+    month: { count: 3, unit: 'month' },
+  };
+
+  const { count, unit } = loadIncrement[zoom];
+  const sign = direction === 'past' ? -1 : 1;
+
+  const newStart = new Date(anchorDate);
+  const newEnd = new Date(anchorDate);
+
+  if (direction === 'past') {
+    if (unit === 'day') {
+      newStart.setDate(newStart.getDate() - count);
+    } else {
+      newStart.setMonth(newStart.getMonth() - count);
+    }
+    // newEnd is the day before the anchor date
+    newEnd.setDate(newEnd.getDate() - 1);
+  } else {
+    // newStart is the day after the anchor date
+    newStart.setDate(newStart.getDate() + 1);
+    if (unit === 'day') {
+      newEnd.setDate(newEnd.getDate() + count);
+    } else {
+      newEnd.setMonth(newEnd.getMonth() + count);
+    }
+  }
+
+  return { start: newStart, end: newEnd };
+}
